@@ -1,7 +1,7 @@
 import * as Path from 'path';
+import { ExperimentHandlerSolidBench } from '@jbr-experiment/solidbench';
 import type { IExperimentPaths } from 'jbr';
 import { createExperimentPaths } from 'jbr';
-import { ExperimentHandlerSolidBench } from '../lib/ExperimentHandlerSolidBench';
 
 let filesOut: Record<string, string> = {};
 let dirsOut: Record<string, boolean | string> = {};

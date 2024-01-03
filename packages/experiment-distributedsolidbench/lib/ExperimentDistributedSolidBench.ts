@@ -1,13 +1,12 @@
 import * as Path from 'path';
 import * as v8 from 'v8';
+import { populateServersFromDir } from '@imec-ilabt/solid-perftest-tools/bin/populate/populate-lib';
 import * as fs from 'fs-extra';
 import type {
   Experiment,
   Hook,
   ITaskContext,
   ICleanTargets,
-  DockerContainerHandler,
-  DockerNetworkHandler,
 } from 'jbr';
 import { ProcessHandlerComposite, secureProcessHandler } from 'jbr';
 import { Generator } from 'solidbench/lib/Generator';
@@ -166,21 +165,21 @@ export class ExperimentDistributedSolidBench implements Experiment {
       if (url.port) {
         dir += `_${url.port}`;
       }
-      return [sbu, dir];
+      return [ sbu, dir ];
     }));
 
     const createdUserInfo = await populateServersFromDir({
       verbose: context.verbose,
-      rootDir: Path.resolve(context.experimentPaths.generated, 'out-fragments'),
-      urlToDirMap: urlToDirMap,
-      authorization: this.serverAuthorization
+      urlToDirMap,
+      authorization: this.serverAuthorization,
     });
   }
 
   public async run(context: ITaskContext): Promise<void> {
     // Setup SPARQL endpoint
     const endpointProcessHandler = await this.hookSparqlEndpoint.start(
-      context);
+      context,
+    );
 
     const processHandler = new ProcessHandlerComposite([
       endpointProcessHandler,
@@ -229,7 +228,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
       results,
       Path.join(resultsOutput, 'query-times.csv'),
       this.queryRunnerRecordTimestamps,
-      [...this.queryRunnerRecordHttpRequests ? ['httpRequests'] : []],
+      [ ...this.queryRunnerRecordHttpRequests ? [ 'httpRequests' ] : [] ],
     );
 
     // Close endpoint and server

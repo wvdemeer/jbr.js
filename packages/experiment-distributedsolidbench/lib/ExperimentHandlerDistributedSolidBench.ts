@@ -28,7 +28,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       hadoopMemory: '4G',
 
       endpointUrl: 'http://localhost:3001/sparql',
-      serverBaseUrls: ['http://distributedsolidbench-server1:3000/', 'http://distributedsolidbench-server2:3000/'],
+      serverBaseUrls: [ 'http://distributedsolidbench-server1:3000/', 'http://distributedsolidbench-server2:3000/' ],
       serverAuthorization: 'WAC',
       queryRunnerReplication: 3,
       queryRunnerWarmupRounds: 1,
@@ -41,7 +41,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
   }
 
   public getHookNames(): string[] {
-    return ['hookSparqlEndpoint'];
+    return [ 'hookSparqlEndpoint' ];
   }
 
   public async init(
@@ -54,17 +54,18 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         Templates.ENHANCEMENT_CONFIG,
         Path.join(experimentPaths.root, experiment.configGenerateAux),
       ),
-      async () => {
+      async() => {
         const dfcp = await fse.readJSON('templates/distributed-fragmenter-config-pod.json');
         const distributeIriTransformer = dfcp.transformers[3];
 
-        console.log({ dfcp, distributeIriTransformer });
+        // Console.log({ dfcp, distributeIriTransformer });
 
         if (distributeIriTransformer['@type'] !== 'QuadTransformerDistributeIri') {
-          throw new Error('Expected an QuadTransformerDistributeIri. Check your distributed-fragmenter-config-pod.json template file');
+          throw new Error('Expected an QuadTransformerDistributeIri. ' +
+              'Check your distributed-fragmenter-config-pod.json template file');
         }
 
-        distributeIriTransformer.replacementStrings = [...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}/pods/$1/profile/card#me`)];
+        distributeIriTransformer.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}/pods/$1/profile/card#me`) ];
         await fse.writeJSON(Path.join(experimentPaths.root, experiment.configFragment), dfcp);
       },
       fse.copyFile(
