@@ -49,7 +49,7 @@
     "test-ci": "jest --ci --maxWorkers=4 --coverage",
     "lint": "eslint . --ext .ts --cache",
     "clean": "rm -rf ./node_modules && rm -rf ./packages/*/node_modules",
-    "postinstall": "yarn run build && lerna run prepare",
+    "postinstall": "yarn --ignore-engines run build && lerna --ignore-engines run prepare",
     "version": "manual-git-changelog onversion",
     "prepare": "husky install",
     "doc": "typedoc"
