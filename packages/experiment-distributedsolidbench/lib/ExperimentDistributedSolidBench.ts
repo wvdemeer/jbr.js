@@ -178,13 +178,19 @@ export class ExperimentDistributedSolidBench implements Experiment {
     // eslint-disable-next-line no-console
     console.log(`ExperimentDistributedSolidBench entry urlToDirMap=${JSON.stringify(urlToDirMap)}`);
 
+    const populateCacheDir = Path.join(context.experimentPaths.generated, 'populate-cache');
+
     // eslint-disable-next-line no-console
     console.log(`ExperimentDistributedSolidBench prepare populateServersFromDir`);
     const createdUserInfo = await populateServersFromDir({
       verbose: context.verbose,
       urlToDirMap,
       authorization: this.serverAuthorization,
+      populateCacheDir,
     });
+
+    // eslint-disable-next-line no-console
+    console.log(`ExperimentDistributedSolidBench exit createdUserInfo.length=${createdUserInfo.length}`);
   }
 
   public async run(context: ITaskContext): Promise<void> {
