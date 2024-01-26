@@ -98,11 +98,20 @@ export async function wrapCommandHandler(
     await handler(context);
     completed = true;
   } catch (error: unknown) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+    // eslint-disable-next-line no-console
+    console.log(`error instanceof Error`, error instanceof Error);
+    // eslint-disable-next-line no-console
+    console.log(error instanceof Error ? `Stacktrace: ${JSON.stringify(error.stack)}` : 'no stacktrace');
+    // eslint-disable-next-line no-console
+    console.log(`Error as JSON: ${JSON.stringify(error)}`);
+
     if (!performingGlobalCleanup) {
       if ('handled' in (<Error>error)) {
         context.logger.error(`${(<Error>error).message}`);
       } else {
-        context.logger.error(`${util.format(error)}`);
+        context.logger.error(`${util.format(error)}`, error instanceof Error ? error.stack : 'no stacktrace');
       }
     }
   } finally {

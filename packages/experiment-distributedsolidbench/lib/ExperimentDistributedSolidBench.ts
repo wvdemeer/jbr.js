@@ -1,6 +1,6 @@
 import * as Path from 'path';
 import * as v8 from 'v8';
-import { populateServersFromDir } from '@imec-ilabt/solid-perftest-tools/bin/populate/populate-lib';
+import { populateServersFromDir } from '@imec-ilabt/solid-perftest-tools';
 import * as fs from 'fs-extra';
 import type {
   Experiment,
@@ -123,6 +123,9 @@ export class ExperimentDistributedSolidBench implements Experiment {
     context: ITaskContext,
     forceOverwriteGenerated: boolean,
   ): Promise<void> {
+    // eslint-disable-next-line no-console
+    console.log(`ExperimentDistributedSolidBench entry this.serverBaseUrls=${this.serverBaseUrls}`);
+
     // Validate memory limit
     const minimumMemory = 8192;
     // eslint-disable-next-line no-bitwise
@@ -133,9 +136,13 @@ export class ExperimentDistributedSolidBench implements Experiment {
       );
     }
 
+    // eslint-disable-next-line no-console
+    console.log(`ExperimentDistributedSolidBench prepare sparql prepare`);
     // Prepare hook
     await this.hookSparqlEndpoint.prepare(context, forceOverwriteGenerated);
 
+    // eslint-disable-next-line no-console
+    console.log(`ExperimentDistributedSolidBench prepare generate`);
     // Prepare dataset
     await new Generator({
       verbose: context.verbose,
@@ -161,13 +168,18 @@ export class ExperimentDistributedSolidBench implements Experiment {
 
     const urlToDirMap: Record<string, string> = Object.fromEntries(this.serverBaseUrls.map(sbu => {
       const url = new URL(sbu);
-      let dir = `${url.protocol}/${url.hostname}`;
+      const protocol = url.protocol.endsWith(':') ? url.protocol.slice(0, -1) : url.protocol;
+      let dir = Path.join(context.experimentPaths.generated, 'out-fragments', protocol, url.hostname);
       if (url.port) {
         dir += `_${url.port}`;
       }
       return [ sbu, dir ];
     }));
+    // eslint-disable-next-line no-console
+    console.log(`ExperimentDistributedSolidBench entry urlToDirMap=${JSON.stringify(urlToDirMap)}`);
 
+    // eslint-disable-next-line no-console
+    console.log(`ExperimentDistributedSolidBench prepare populateServersFromDir`);
     const createdUserInfo = await populateServersFromDir({
       verbose: context.verbose,
       urlToDirMap,

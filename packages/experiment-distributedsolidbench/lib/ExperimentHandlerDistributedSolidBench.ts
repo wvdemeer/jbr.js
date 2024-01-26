@@ -48,26 +48,35 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     experimentPaths: IExperimentPaths,
     experiment: ExperimentDistributedSolidBench,
   ): Promise<void> {
+    const writeConfigFragments = async(): Promise<void> => {
+      const dfcp = await fse.readJSON(
+        Path.join(__dirname, 'templates', 'distributed-fragmenter-config-pod.json'),
+      );
+      const distributeIriTransformer = dfcp.transformers[3];
+
+      if (distributeIriTransformer['@type'] !== 'QuadTransformerDistributeIri') {
+        throw new Error('Expected an QuadTransformerDistributeIri. ' +
+            'Check your distributed-fragmenter-config-pod.json template file');
+      }
+
+      distributeIriTransformer.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}/pods/$1/profile/card#me`) ];
+      await fse.writeJSON(
+        Path.join(experimentPaths.root, experiment.configFragment),
+        dfcp,
+        { replacer: null, spaces: 3 },
+      );
+    };
+
+    // We do this first, instead of in the Promise.all below
+    // Because for some reason, it doesn't execute inside the Promise.all
+    await writeConfigFragments();
+
     // Copy config templates
     await Promise.all([
       fse.copyFile(
         Templates.ENHANCEMENT_CONFIG,
         Path.join(experimentPaths.root, experiment.configGenerateAux),
       ),
-      async() => {
-        const dfcp = await fse.readJSON('templates/distributed-fragmenter-config-pod.json');
-        const distributeIriTransformer = dfcp.transformers[3];
-
-        // Console.log({ dfcp, distributeIriTransformer });
-
-        if (distributeIriTransformer['@type'] !== 'QuadTransformerDistributeIri') {
-          throw new Error('Expected an QuadTransformerDistributeIri. ' +
-              'Check your distributed-fragmenter-config-pod.json template file');
-        }
-
-        distributeIriTransformer.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}/pods/$1/profile/card#me`) ];
-        await fse.writeJSON(Path.join(experimentPaths.root, experiment.configFragment), dfcp);
-      },
       fse.copyFile(
         Templates.ENHANCEMENT_FRAGMENT_CONFIG,
         Path.join(experimentPaths.root, experiment.configFragmentAux),
