@@ -1,7 +1,8 @@
+import fs from 'fs/promises';
 import * as Path from 'path';
 import * as v8 from 'v8';
 import { populateServersFromDir } from '@imec-ilabt/solid-perftest-tools';
-import * as fs from 'fs-extra';
+import * as fse from 'fs-extra';
 import type {
   Experiment,
   Hook,
@@ -179,6 +180,15 @@ export class ExperimentDistributedSolidBench implements Experiment {
     console.log(`ExperimentDistributedSolidBench entry urlToDirMap=${JSON.stringify(urlToDirMap)}`);
 
     const populateCacheDir = Path.join(context.experimentPaths.generated, 'populate-cache');
+    let exists: boolean;
+    try {
+      exists = (await fs.stat(populateCacheDir)).isDirectory();
+    } catch {
+      exists = false;
+    }
+    if (!exists) {
+      await fs.mkdir(populateCacheDir, { recursive: false });
+    }
 
     // eslint-disable-next-line no-console
     console.log(`ExperimentDistributedSolidBench prepare populateServersFromDir`);
@@ -187,6 +197,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
       urlToDirMap,
       authorization: this.serverAuthorization,
       populateCacheDir,
+      maxParallelism: 30,
     });
 
     // eslint-disable-next-line no-console
@@ -238,7 +249,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
 
     // Write results
     const resultsOutput = context.experimentPaths.output;
-    if (!await fs.pathExists(resultsOutput)) {
+    if (!await fse.pathExists(resultsOutput)) {
       await fs.mkdir(resultsOutput);
     }
     context.logger.info(`Writing results to ${resultsOutput}\n`);
