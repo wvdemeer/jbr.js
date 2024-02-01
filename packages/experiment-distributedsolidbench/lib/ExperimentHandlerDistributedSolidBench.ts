@@ -1,3 +1,4 @@
+import fs from 'fs';
 import * as Path from 'path';
 import * as fse from 'fs-extra';
 import type { IExperimentPaths } from 'jbr';
@@ -16,6 +17,14 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
   public getDefaultParams(
     experimentPaths: IExperimentPaths,
   ): Record<string, any> {
+    let serverUrls = [ 'http://distributedsolidbench-server1:3000/', 'http://distributedsolidbench-server2:3000/' ];
+    // eslint-disable-next-line no-process-env
+    const serverFile = process.env.SOLID_SERVERS_FILE;
+    if (serverFile) {
+      // eslint-disable-next-line no-sync
+      const fileContent = fs.readFileSync(serverFile, 'utf-8');
+      serverUrls = fileContent.split(/\r?\n|\r|\n/ug).filter(str => str.trim().length > 0);
+    }
     return {
       scale: '0.1',
       configGenerateAux: 'input/config-enhancer.json',
@@ -28,7 +37,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       hadoopMemory: '4G',
 
       endpointUrl: 'http://localhost:3001/sparql',
-      serverBaseUrls: [ 'http://distributedsolidbench-server1:3000/', 'http://distributedsolidbench-server2:3000/' ],
+      serverBaseUrls: serverUrls,
       serverAuthorization: 'WAC',
       queryRunnerReplication: 3,
       queryRunnerWarmupRounds: 1,
@@ -59,7 +68,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
             'Check your distributed-fragmenter-config-pod.json template file');
       }
 
-      distributeIriTransformer.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}/pods/$1/profile/card#me`) ];
+      distributeIriTransformer.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}users$1/profile/card#me`) ];
       await fse.writeJSON(
         Path.join(experimentPaths.root, experiment.configFragment),
         dfcp,
