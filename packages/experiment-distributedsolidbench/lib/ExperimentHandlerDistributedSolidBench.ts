@@ -25,6 +25,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       const fileContent = fs.readFileSync(serverFile, 'utf-8');
       serverUrls = fileContent.split(/\r?\n|\r|\n/ug).filter(str => str.trim().length > 0);
     }
+    const queryRunnerUpQueryPodFile = `${serverUrls[0]}/users00000000000000000094/profile/card#me`;
     return {
       scale: '0.1',
       configGenerateAux: 'input/config-enhancer.json',
@@ -43,7 +44,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       queryRunnerWarmupRounds: 1,
       queryRunnerRecordTimestamps: true,
       queryRunnerRecordHttpRequests: true,
-      queryRunnerUpQuery: `SELECT * WHERE { <http://solidbench-server:3000/pods/00000000000000000933/profile/card#me> a ?o } LIMIT 1`,
+      queryRunnerUpQuery: `SELECT * WHERE { <${queryRunnerUpQueryPodFile}> a ?o } LIMIT 1`,
       queryRunnerUrlParamsInit: {},
       queryRunnerUrlParamsRun: {},
     };

@@ -1,31 +1,54 @@
 
 Uses https://www.npmjs.com/package/yalc for local dev deps
 
+Give your user docker permissions if needed:
+```
+usermod -a -G docker $(whoami)  # then login again
+```
+
 ```bash
 git clone https://github.com/twalcari/rdf-dataset-fragmenter.js.git 
 git clone git@github.com:wvdemeer/jbr.js.git
+# If needed: sudo npm install -g yarn
 yarn global add yalc
 PATH="$HOME/.yarn/bin/:$PATH"
 ```
 
 ```bash
 cd rdf-dataset-fragmenter.js
+git checkout distribute-iri
 yarn install
 yarn run build
 yalc publish
 ```
 
+Save the CSS URLs to `ss_list.txt` in the `jbr.js` dir. (One line per URL. Base URLs, without path, example: `https://example.com/`)
+
 ```bash
 cd jbr.js
+git checkout distribute-iri
 yalc add rdf-dataset-fragmenter
 yarn install --ignore-engines
-jbr init distributedsolidbench test-jbr-1
+cd packages/jbr
+yarn link
+cd -
+SOLID_SERVERS_FILE=$(pwd)/ss_list.txt jbr init distributedsolidbench test-jbr-1
 cd test-jbr-1
 jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 ```
 
-Edit `jbr-experiment.json` in `test-jbr-1`:
-- Change `serverBaseUrls` to the list of server URLs
+`jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
+
+Check that things are not fucked up:
+```bash
+grep '"version"' ./node_modules/rdf-dataset-fragmenter/package.json ./node_modules/solidbench/node_modules/rdf-dataset-fragmenter/package.json
+```
+
+If these differ, do:
+```bash
+rm -r ./node_modules/solidbench/node_modules/rdf-dataset-fragmenter
+cp -a ./node_modules/rdf-dataset-fragmenter ./node_modules/solidbench/node_modules/rdf-dataset-fragmenter
+```
 
 Run:
 ```
