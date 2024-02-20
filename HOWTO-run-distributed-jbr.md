@@ -22,7 +22,7 @@ yarn run build
 yalc publish
 ```
 
-Save the CSS URLs to `ss_list.txt` in the `jbr.js` dir. (One line per URL. Base URLs, without path, example: `https://example.com/`)
+Save the solid server URLs to `ss_list.txt` in the `jbr.js` dir. (One line per URL. Base URLs, without path, example: `https://example.com/`)
 
 ```bash
 cd jbr.js
@@ -50,8 +50,15 @@ rm -r ./node_modules/solidbench/node_modules/rdf-dataset-fragmenter
 cp -a ./node_modules/rdf-dataset-fragmenter ./node_modules/solidbench/node_modules/rdf-dataset-fragmenter
 ```
 
-Run:
-```
+Prepare:
+```bash
 cd test-jbr-1
-jbr prepare
+jbr prepare -v
+curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/dockerfiles/Dockerfile-client' > input/dockerfiles/Dockerfile-client
+curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/context-client.json' > input/context-client.json 
+```
+
+Run:
+```bash
+jbr run -v
 ```

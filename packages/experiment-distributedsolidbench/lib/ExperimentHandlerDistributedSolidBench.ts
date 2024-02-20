@@ -46,7 +46,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       queryRunnerRecordHttpRequests: true,
       queryRunnerUpQuery: `SELECT * WHERE { <${queryRunnerUpQueryPodFile}> a ?o } LIMIT 1`,
       queryRunnerUrlParamsInit: {},
-      queryRunnerUrlParamsRun: {},
+      // QueryRunnerUrlParamsRun: {},
+      queryRunnerUrlParamsRun: { context: '{ "lenient": true }' },
     };
   }
 
