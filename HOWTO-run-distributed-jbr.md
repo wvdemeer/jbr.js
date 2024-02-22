@@ -38,6 +38,7 @@ jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 ```
 
 `jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
+`input/config-fragmenter.json` and `input/config-queries.json` as well.
 
 Check that things are not fucked up:
 ```bash
@@ -53,9 +54,9 @@ cp -a ./node_modules/rdf-dataset-fragmenter ./node_modules/solidbench/node_modul
 Prepare:
 ```bash
 cd test-jbr-1
-jbr prepare -v
 curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/dockerfiles/Dockerfile-client' > input/dockerfiles/Dockerfile-client
 curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/context-client.json' > input/context-client.json 
+jbr prepare -v
 ```
 
 Run:

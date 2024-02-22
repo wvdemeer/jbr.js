@@ -66,7 +66,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       const distributeIriTransformer = dfcp.transformers[3];
 
       if (distributeIriTransformer['@type'] !== 'QuadTransformerDistributeIri') {
-        throw new Error('Expected an QuadTransformerDistributeIri. ' +
+        throw new Error('Expected a QuadTransformerDistributeIri. ' +
             'Check your distributed-fragmenter-config-pod.json template file');
       }
 
@@ -77,10 +77,29 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         { replacer: null, spaces: 3 },
       );
     };
+    const writeConfigQueries = async(): Promise<void> => {
+      const dqc = await fse.readJSON(
+        Path.join(__dirname, 'templates', 'distributed-query-config.json'),
+      );
+
+      const valueTransformerDistributeIri = dqc.providers[7].variables[0].valueTransformers[1];
+      if (valueTransformerDistributeIri['@type'] !== 'ValueTransformerDistributeIri') {
+        throw new Error(`Expected a ValueTransformerDistributeIri but got ${valueTransformerDistributeIri['@type']}. ` +
+            'Check your distributed-query-config.json template file');
+      }
+
+      valueTransformerDistributeIri.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}users$1/profile/card#me`) ];
+      await fse.writeJSON(
+        Path.join(experimentPaths.root, experiment.configQueries),
+        dqc,
+        { replacer: null, spaces: 3 },
+      );
+    };
 
     // We do this first, instead of in the Promise.all below
     // Because for some reason, it doesn't execute inside the Promise.all
     await writeConfigFragments();
+    await writeConfigQueries();
 
     // Copy config templates
     await Promise.all([
@@ -93,10 +112,6 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         Path.join(experimentPaths.root, experiment.configFragmentAux),
       ),
       fse.copyFile(
-        Templates.QUERY_CONFIG,
-        Path.join(experimentPaths.root, experiment.configQueries),
-      ),
-      fse.copyFile(
         Templates.SERVER_CONFIG,
         Path.join(experimentPaths.root, experiment.configServer),
       ),
@@ -105,7 +120,5 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         Path.join(experimentPaths.root, experiment.configValidation),
       ),
     ]);
-
-    // Await experiment.replaceBaseUrlInDir(experimentPaths.root);
   }
 }
