@@ -8,6 +8,7 @@ usermod -a -G docker $(whoami)  # then login again
 
 ```bash
 git clone https://github.com/twalcari/rdf-dataset-fragmenter.js.git 
+git clone git@github.com:wvdemeer/sparql-query-parameter-instantiator.js.git
 git clone git@github.com:wvdemeer/jbr.js.git
 # If needed: sudo npm install -g yarn
 yarn global add yalc
@@ -22,12 +23,22 @@ yarn run build
 yalc publish
 ```
 
+
+```bash
+cd sparql-query-parameter-instantiator.js
+git checkout distribute-iri-value-transf
+yarn install
+yarn run build
+yalc publish
+```
+
 Save the solid server URLs to `ss_list.txt` in the `jbr.js` dir. (One line per URL. Base URLs, without path, example: `https://example.com/`)
 
 ```bash
 cd jbr.js
 git checkout distribute-iri
 yalc add rdf-dataset-fragmenter
+yalc add sparql-query-parameter-instantiator
 yarn install --ignore-engines
 cd packages/jbr
 yarn link
