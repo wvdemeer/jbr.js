@@ -72,5 +72,6 @@ jbr prepare -v
 
 Run:
 ```bash
+mkdir output/log
 jbr run -v
 ```
