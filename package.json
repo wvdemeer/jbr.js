@@ -85,8 +85,5 @@
     "build",
     "lint",
     "test"
-  ],
-  "dependencies": {
-    "rdf-dataset-fragmenter": "file:.yalc/rdf-dataset-fragmenter"
-  }
+  ]
 }
