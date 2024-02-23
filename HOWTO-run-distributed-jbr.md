@@ -19,16 +19,7 @@ Save the solid server URLs to `ss_list.txt` in the `jbr.js` dir. (One line per U
 cd jbr.js
 git checkout distribute-iri
 yarn install --ignore-engines
-cd packages/jbr
-yarn link
-cd -
-SOLID_SERVERS_FILE=$(pwd)/ss_list.txt jbr init distributedsolidbench test-jbr-1
-cd test-jbr-1
-jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 ```
-
-`jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
-`input/config-fragmenter.json` and `input/config-queries.json` as well.
 
 Check that versions are correct everywhere:
 ```bash
@@ -39,6 +30,18 @@ grep -e '"version": "[0-9.]*"' $(find . -iwholename '*/sparql-query-parameter-in
 Minimum required versions:
 - `rdf-dataset-fragmenter` version `2.5.0`
 - `sparql-query-parameter-instantiator` version `2.6.0`
+
+```
+cd packages/jbr
+yarn link
+cd -
+SOLID_SERVERS_FILE=$(pwd)/ss_list.txt jbr init distributedsolidbench test-jbr-1
+cd test-jbr-1
+jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
+```
+
+`jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
+`input/config-fragmenter.json` and `input/config-queries.json` as well.
 
 Prepare:
 ```bash
