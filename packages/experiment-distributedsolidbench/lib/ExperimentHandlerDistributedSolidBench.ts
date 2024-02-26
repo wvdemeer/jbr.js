@@ -59,6 +59,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     experimentPaths: IExperimentPaths,
     experiment: ExperimentDistributedSolidBench,
   ): Promise<void> {
+    const serverCount = experiment.serverBaseUrls.length;
+
     const writeConfigFragments = async(): Promise<void> => {
       const dfcp = await fse.readJSON(
         Path.join(__dirname, 'templates', 'distributed-fragmenter-config-pod.json'),
@@ -70,7 +72,10 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
             'Check your distributed-fragmenter-config-pod.json template file');
       }
 
-      distributeIriTransformer.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}users$1/profile/card#me`) ];
+      distributeIriTransformer.replacementStrings = [
+        ...experiment.serverBaseUrls.map(baseUrl =>
+          `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
+      ];
       await fse.writeJSON(
         Path.join(experimentPaths.root, experiment.configFragment),
         dfcp,
@@ -88,7 +93,10 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
             'Check your distributed-query-config.json template file');
       }
 
-      valueTransformerDistributeIri.replacementStrings = [ ...experiment.serverBaseUrls.map(baseUrl => `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}users$1/profile/card#me`) ];
+      valueTransformerDistributeIri.replacementStrings = [
+        ...experiment.serverBaseUrls.map(baseUrl =>
+          `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
+      ];
       await fse.writeJSON(
         Path.join(experimentPaths.root, experiment.configQueries),
         dqc,
