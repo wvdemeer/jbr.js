@@ -23,9 +23,11 @@ yarn install --ignore-engines
 
 Check that versions are correct everywhere:
 ```bash
-grep -e '"version": "[0-9.]*"' $(find . -iwholename '*/rdf-dataset-fragmenter/package.json')
-grep -e '"version": "[0-9.]*"' $(find . -iwholename '*/sparql-query-parameter-instantiator/package.json')
+grep -H -e '"version": "[0-9.]*"' $(find . -iwholename '*/rdf-dataset-fragmenter/package.json')
+grep -H -e '"version": "[0-9.]*"' $(find . -iwholename '*/sparql-query-parameter-instantiator/package.json')
 ```
+
+(Try `yarn install --ignore-engines --check-files` if `rdf-dataset-fragmenter` or `sparql-query-parameter-instantiator` is missing. `yarn cache clean` and install again might also work. Not sure why.)
 
 Minimum required versions:
 - `rdf-dataset-fragmenter` version `2.5.0`
