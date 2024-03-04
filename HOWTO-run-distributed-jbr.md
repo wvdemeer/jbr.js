@@ -39,7 +39,7 @@ yarn link
 cd -
 SOLID_SERVERS_FILE=$(pwd)/ss_list.txt jbr init distributedsolidbench test-jbr-1
 cd test-jbr-1
-mkdir -p output/log
+mkdir -p output/logs
 jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 ```
 
@@ -57,7 +57,7 @@ jbr prepare -v 2>&1 | tee prepare.log
 
 Run:
 ```bash
-mkdir -p output/log
+mkdir -p output/logs
 jbr run -v 2>&1 | tee run.log
 ```
 
