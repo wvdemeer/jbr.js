@@ -25,7 +25,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       const fileContent = fs.readFileSync(serverFile, 'utf-8');
       serverUrls = fileContent.split(/\r?\n|\r|\n/ug).filter(str => str.trim().length > 0);
     }
-    const queryRunnerUpQueryPodFile = `${serverUrls[0]}/users00000000000000000094/profile/card#me`;
+    const firstServerUrl = serverUrls[0].endsWith('/') ? serverUrls[0] : `${serverUrls[0]}/`;
+    const queryRunnerUpQueryPodFile = `${firstServerUrl}c8u00000000000000000933/profile/card#me`;
     return {
       scale: '0.1',
       configGenerateAux: 'input/config-enhancer.json',
