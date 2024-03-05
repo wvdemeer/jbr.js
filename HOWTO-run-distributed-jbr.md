@@ -63,6 +63,12 @@ echo '{ "@context": [ "https://linkedsoftwaredependencies.org/bundles/npm/@comun
 jbr prepare -v 2>&1 | tee prepare.log
 ```
 
+Run a local CSS:
+```bash
+cd test-jbr-1
+npx @solid/community-server@6.1.0 -c input/css-localhost-3000-config.json -f generated/out-fragments/http/localhost_3000/
+```
+
 Run:
 ```bash
 mkdir -p output/logs

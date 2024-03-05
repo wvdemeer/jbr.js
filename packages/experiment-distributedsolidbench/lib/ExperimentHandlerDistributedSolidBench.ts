@@ -129,5 +129,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         Path.join(experimentPaths.root, experiment.configValidation),
       ),
     ]);
+
+    await fse.copyFile(Path.join(__dirname, 'templates', 'css-localhost-3000-config.json'),
+      Path.join(experimentPaths.input, 'css-localhost-3000-config.json'));
   }
 }
