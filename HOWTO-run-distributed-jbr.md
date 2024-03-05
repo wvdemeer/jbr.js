@@ -46,7 +46,13 @@ jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 `jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
 `input/config-fragmenter.json` and `input/config-queries.json` as well.
 
-Edit `input/dockerfiles/Dockerfile-client` and add `--lenient --showStackTrace` to the `CMD` on the last line
+Edit `input/dockerfiles/Dockerfile-client` and remove the has on the first line, so it becomes:
+
+```dockerfile
+FROM comunica/query-sparql-link-traversal-solid:dev
+```
+
+Not sure if needed: Edit `input/dockerfiles/Dockerfile-client` and add `--lenient --showStackTrace` to the `CMD` on the last line
 
 Prepare:
 ```bash
