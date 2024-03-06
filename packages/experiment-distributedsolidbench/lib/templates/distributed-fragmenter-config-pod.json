@@ -24,21 +24,21 @@
         {
             "@type": "QuadTransformerReplaceIri",
             "searchRegex": "^http://www.ldbc.eu",
-            "replacementString": "http://localhost:3000/www.ldbc.eu"
+            "replacementString": "http://localhost:3003/www.ldbc.eu"
         },
         {
             "@type": "QuadTransformerReplaceIri",
             "searchRegex": "^http://dbpedia.org",
-            "replacementString": "http://localhost:3000/dbpedia.org"
+            "replacementString": "http://localhost:3003/dbpedia.org"
         },
         {
             "@type": "QuadTransformerReplaceIri",
             "searchRegex": "^http://www.w3.org/2002/07/owl",
-            "replacementString": "http://localhost:3000/www.w3.org/2002/07/owl"
+            "replacementString": "http://localhost:3003/www.w3.org/2002/07/owl"
         },
         {
             "@type": "QuadTransformerDistributeIri",
-            "searchRegex": "^http://localhost:3000/www.ldbc.eu/ldbc_socialnet/1.0/data/pers([0-9]*)$",
+            "searchRegex": "^http://localhost:3003/www.ldbc.eu/ldbc_socialnet/1.0/data/pers([0-9]*)$",
             "replacementStrings": [
                 "http://server1/users$1/profile/card#me",
                 "http://server2/users$1/profile/card#me"

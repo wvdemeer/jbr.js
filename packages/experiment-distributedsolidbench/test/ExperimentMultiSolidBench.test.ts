@@ -164,14 +164,14 @@ describe('ExperimentSolidBench', () => {
       hookSparqlEndpoint,
       3_000,
       'info',
-      'http://localhost:3000',
+      'http://localhost:3003',
       resourceConstraints,
       'http://localhost:3001/sparql',
       3,
       1,
       true,
       true,
-      `SELECT * WHERE { <http://solidbench-server:3000/pods/00000000000000000933/profile/card#me> a ?o } LIMIT 1`,
+      `SELECT * WHERE { <http://solidbench-server:3003/pods/00000000000000000933/profile/card#me> a ?o } LIMIT 1`,
       {},
       {},
       600,
@@ -188,14 +188,14 @@ describe('ExperimentSolidBench', () => {
   describe('replaceBaseUrlInDir', () => {
     it('should handle nested directories', async() => {
       filesOut['dir/a.ttl'] = ``;
-      filesOut['dir/b.ttl'] = `localhost:3000`;
+      filesOut['dir/b.ttl'] = `localhost:3003`;
       filesOut['dir/c/c.ttl'] = ``;
       filesOut['dir/c/d.ttl'] = ``;
 
       await experiment.replaceBaseUrlInDir('dir');
 
       expect(filesOut['dir/a.ttl']).toEqual('');
-      expect(filesOut['dir/b.ttl']).toEqual('solidbench-server:3000');
+      expect(filesOut['dir/b.ttl']).toEqual('solidbench-server:3003');
       expect(filesOut['dir/c/c.ttl']).toEqual('');
       expect(filesOut['dir/c/d.ttl']).toEqual('');
     });
@@ -215,7 +215,7 @@ describe('ExperimentSolidBench', () => {
         imageName: 'IMG-solidbench-server',
         buildArgs: {
           CONFIG_SERVER: 'input/config-server.json',
-          BASE_URL: 'http://localhost:3000',
+          BASE_URL: 'http://localhost:3003',
           LOG_LEVEL: 'info',
         },
         logger,
@@ -246,7 +246,7 @@ This can be configured using Node's --max_old_space_size option.`);
         imageName: 'IMG-solidbench-server',
         buildArgs: {
           CONFIG_SERVER: 'input/config-server.json',
-          BASE_URL: 'http://localhost:3000',
+          BASE_URL: 'http://localhost:3003',
           LOG_LEVEL: 'info',
         },
         logger,
@@ -269,11 +269,11 @@ This can be configured using Node's --max_old_space_size option.`);
         statsFilePath: Path.join(context.cwd, 'output', 'stats-server.csv'),
         hostConfig: {
           Binds: [
-            `${context.experimentPaths.root}/generated/out-fragments/http/localhost_3000/:/data`,
+            `${context.experimentPaths.root}/generated/out-fragments/http/localhost_3003/:/data`,
           ],
           NetworkMode: 'NETWORK',
           PortBindings: {
-            '3000/tcp': [{ HostPort: `3000` }],
+            '3003/tcp': [{ HostPort: `3003` }],
           },
         },
       });
@@ -315,14 +315,14 @@ This can be configured using Node's --max_old_space_size option.`);
         hookSparqlEndpoint,
         3_000,
         'info',
-        'http://localhost:3000',
+        'http://localhost:3003',
         resourceConstraints,
         'http://localhost:3001/sparql',
         3,
         1,
         true,
         false,
-        `SELECT * WHERE { <http://solidbench-server:3000/pods/00000000000000000933/profile/card#me> a ?o } LIMIT 1`,
+        `SELECT * WHERE { <http://solidbench-server:3003/pods/00000000000000000933/profile/card#me> a ?o } LIMIT 1`,
         {},
         {},
         600,

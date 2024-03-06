@@ -130,7 +130,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       ),
     ]);
 
-    await fse.copyFile(Path.join(__dirname, 'templates', 'css-localhost-3000-config.json'),
-      Path.join(experimentPaths.input, 'css-localhost-3000-config.json'));
+    await fse.copyFile(Path.join(__dirname, 'templates', 'css-localhost-3003-config.json'),
+      Path.join(experimentPaths.input, 'css-localhost-3003-config.json'));
   }
 }
