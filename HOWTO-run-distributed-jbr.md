@@ -46,14 +46,6 @@ jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 `jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
 `input/config-fragmenter.json` and `input/config-queries.json` as well.
 
-Edit `input/dockerfiles/Dockerfile-client` and remove the has on the first line, so it becomes:
-
-```dockerfile
-FROM comunica/query-sparql-link-traversal-solid:dev
-```
-
-Not sure if needed: Edit `input/dockerfiles/Dockerfile-client` and add `--lenient --showStackTrace` to the `CMD` on the last line
-
 Prepare:
 ```bash
 cd test-jbr-1
@@ -62,6 +54,15 @@ curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversa
 echo '{ "@context": [ "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql/^2.0.0/components/context.jsonld", "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-link-traversal/^0.0.0/components/context.jsonld" ], "import": [ "ccqslt:config/config-base.json" ] }' > input/config-client.json 
 jbr prepare -v 2>&1 | tee prepare.log
 ```
+
+Edit `input/dockerfiles/Dockerfile-client` and remove the has on the first line, so it becomes:
+
+```dockerfile
+FROM comunica/query-sparql-link-traversal-solid:dev
+```
+
+Not sure if needed: Edit `input/dockerfiles/Dockerfile-client` and add `--lenient --showStackTrace` to the `CMD` on the last line
+
 
 Run a local CSS:
 ```bash
