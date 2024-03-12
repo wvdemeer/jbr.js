@@ -51,7 +51,9 @@ Prepare:
 cd test-jbr-1
 curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/dockerfiles/Dockerfile-client' > input/dockerfiles/Dockerfile-client
 curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/context-client.json' > input/context-client.json
-echo '{ "@context": [ "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql/^2.0.0/components/context.jsonld", "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-link-traversal/^0.0.0/components/context.jsonld" ], "import": [ "ccqslt:config/config-base.json" ] }' > input/config-client.json 
+echo -e '{ \n   "@context": [ \n      "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql/^2.0.0/components/context.jsonld", \n      "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-link-traversal/^0.0.0/components/context.jsonld" \n   ], \n   "import": [ "ccqslt:config/config-solid-default.json" ]\n }\n' > input/config-client.json
+NODE_DNS="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be"
+sed -e "s/localhost:3000/${NODE_DNS}:3003/g" -i input/config-fragmenter*.json
 jbr prepare -v 2>&1 | tee prepare.log
 ```
 
@@ -67,7 +69,8 @@ Not sure if needed: Edit `input/dockerfiles/Dockerfile-client` and add `--lenien
 Run a local CSS:
 ```bash
 cd test-jbr-1
-npx @solid/community-server@6.1.0 -c input/css-localhost-3003-config.json -f generated/out-fragments/http/localhost_3003/ --port 3003
+NODE_DNS="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be"
+npx @solid/community-server@6.1.0 -c input/css-localhost-3003-config.json -f generated/out-fragments/http/localhost_3003/ --port 3003 --baseUrl "http://${NODE_DNS}:3003"
 ```
 
 Run:
