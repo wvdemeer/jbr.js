@@ -16,6 +16,7 @@ import {
   SparqlBenchmarkRunner,
   writeBenchmarkResults,
 } from 'sparql-benchmark-runner';
+import { setGlobalDispatcher, Agent } from 'undici';
 
 /**
  * An experiment instance for the SolidBench social network benchmark.
@@ -205,6 +206,9 @@ export class ExperimentDistributedSolidBench implements Experiment {
   }
 
   public async run(context: ITaskContext): Promise<void> {
+    // Prevent BodyTimeoutError: Body Timeout Error UND_ERR_BODY_TIMEOUT
+    setGlobalDispatcher(new Agent({ bodyTimeout: 900e3 }));
+
     // Setup SPARQL endpoint
     const endpointProcessHandler = await this.hookSparqlEndpoint.start(
       context,

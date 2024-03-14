@@ -2394,10 +2394,10 @@
   resolved "https://registry.npmjs.org/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@imec-ilabt/solid-perftest-tools@^1.3.1":
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/@imec-ilabt/solid-perftest-tools/-/solid-perftest-tools-1.3.7.tgz#99bada0421b96df91d2945c18118cfe94ec5e253"
-  integrity sha512-kCmGN++YzYx1c2aKqWMxM9/Tl0edRp8S3NztLGFddcrnfiRt3i9p+6e6pdTrkwBZCguwTgTPQ8mAFlk8+nZdfw==
+"@imec-ilabt/solid-perftest-tools@^1.3.20":
+  version "1.3.20"
+  resolved "https://registry.yarnpkg.com/@imec-ilabt/solid-perftest-tools/-/solid-perftest-tools-1.3.20.tgz#b9263010545ca9169465d3b65c5e4aec93f1b4a5"
+  integrity sha512-aUGnVcq7oxa6uubUabu/12RhX2NZV1xTUMxMaNEkRXZZVF4Zr/VI0C4MYk1S61/eu6AcFRTdnC95a9rwfyJvow==
   dependencies:
     "@inrupt/solid-client-authn-node" "^1.17.3"
     jsonld-streaming-serializer "^2.1.0"
@@ -3272,7 +3272,7 @@
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@rdfjs/types@*", "@rdfjs/types@^1.1.0":
+"@rdfjs/types@*", "@rdfjs/types@>=1.0.0", "@rdfjs/types@^1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@rdfjs/types/-/types-1.1.0.tgz"
   integrity sha512-5zm8bN2/CC634dTcn/0AhTRLaQRjXDZs3QfcAsQKNturHT7XVWcKy/8p3P5gXl+YkZTAmy7T5M/LyiT/jbkENw==
@@ -3915,7 +3915,14 @@
   resolved "https://registry.npmjs.org/@types/spark-md5/-/spark-md5-3.0.2.tgz"
   integrity sha512-82E/lVRaqelV9qmRzzJ1PKTpyrpnT7mwdneKNJB9hUtypZDMggloDfFUCIqRRx3lYRxteCwXSq9c+W71Vf0QnQ==
 
-"@types/sparqljs@*", "@types/sparqljs@^3.1.3":
+"@types/sparqljs@*":
+  version "3.1.10"
+  resolved "https://registry.yarnpkg.com/@types/sparqljs/-/sparqljs-3.1.10.tgz#69e914c4c58e6b9adf4d4e5853fedd3c6bc3acf8"
+  integrity sha512-rqMpUhl/d8B+vaACa6ZVdwPQ1JXw+KxiCc0cndgn/V6moRG3WjUAgoBnhSwfKtXD98wgMThDsc6R1+yRUuMsAg==
+  dependencies:
+    "@rdfjs/types" ">=1.0.0"
+
+"@types/sparqljs@^3.1.3":
   version "3.1.4"
   resolved "https://registry.npmjs.org/@types/sparqljs/-/sparqljs-3.1.4.tgz"
   integrity sha512-0MvCTEfveYJDkI91olLcDf/F3wMMbsxwNxiNZeglt4tbIFULd9pRpcacj1MuA+acFDkTnPXS9L7OqZNn/W1MAg==
@@ -5401,7 +5408,7 @@ cssesc@^3.0.0:
 
 csv-parser@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.npmjs.org/csv-parser/-/csv-parser-3.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/csv-parser/-/csv-parser-3.0.0.tgz#b88a6256d79e090a97a1b56451f9327b01d710e7"
   integrity sha512-s6OYSXAK3IdKqYO33y09jhypG/bSDHPuyCme/IdEHfWpLf/jKcpitVFyOC6UemgGk8v7Q5u2XE0vvwmanxhGlQ==
   dependencies:
     minimist "^1.2.0"
@@ -8231,6 +8238,7 @@ ldbc-snb-validation-generator@^1.1.0:
     "@types/fs-extra" "^9.0.13"
     componentsjs "^5.0.1"
     fs-extra "^10.1.0"
+    sparql-query-parameter-instantiator "^2.3.0"
 
 lerna@^6.0.0:
   version "6.6.2"
@@ -9995,6 +10003,24 @@ rdf-data-factory@^1.0.1, rdf-data-factory@^1.1.0, rdf-data-factory@^1.1.1, rdf-d
   dependencies:
     "@rdfjs/types" "*"
 
+rdf-dataset-fragmenter@^2.3.5:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/rdf-dataset-fragmenter/-/rdf-dataset-fragmenter-2.5.0.tgz#370e8274c6db14ac7d03521a38253fb6cf9bff8e"
+  integrity sha512-r9P3/+8L8fsvvLFgWhFdmoqaalGnaiIFJ4OO8F50EHsttt+aZM1QMzWhBuDX65rQWcYD/+OxchMfx5su1TGWvg==
+  dependencies:
+    "@rdfjs/types" "*"
+    "@types/async-lock" "^1.4.0"
+    "@types/lru-cache" "^5.0.0"
+    async-lock "^1.4.0"
+    componentsjs "^5.0.0"
+    lru-cache "^6.0.0"
+    mkdirp "^3.0.1"
+    rdf-parse "^2.0.0"
+    rdf-serialize "^2.0.0"
+    rdf-string "^1.6.0"
+    rdf-terms "^1.11.0"
+    relative-to-absolute-iri "^1.0.0"
+
 rdf-dereference@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/rdf-dereference/-/rdf-dereference-2.2.0.tgz"
@@ -10758,6 +10784,8 @@ solidbench@^1.6.1, solidbench@^1.7.1:
     dockerode "^3.2.1"
     ldbc-snb-enhancer "^2.5.1"
     ldbc-snb-validation-generator "^1.1.0"
+    rdf-dataset-fragmenter "^2.3.5"
+    sparql-query-parameter-instantiator "^2.5.1"
     unzipper "^0.10.11"
     yargs "^16.2.0"
 
@@ -10801,6 +10829,17 @@ sparql-benchmark-runner@^2.9.4:
     "@types/yargs" "^16.0.1"
     fetch-sparql-endpoint "^3.2.1"
     yargs "^16.2.0"
+
+sparql-query-parameter-instantiator@^2.3.0, sparql-query-parameter-instantiator@^2.5.1:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/sparql-query-parameter-instantiator/-/sparql-query-parameter-instantiator-2.6.0.tgz#64fe617e78b5c62fee4e42687ee3d0553590c1e3"
+  integrity sha512-BO9zELvvvmJvPloZD1C+o3wmx3EVj4SuNsjvB3YdZffkcqLpmrcp3rHiTXfZ+/EuisxTzOaTd7at2+r28qIL2w==
+  dependencies:
+    "@rdfjs/types" "*"
+    "@types/sparqljs" "*"
+    componentsjs "^5.0.1"
+    csv-parser "^3.0.0"
+    sparqljs "^3.4.1"
 
 sparqlalgebrajs@^4.0.0, sparqlalgebrajs@^4.0.3, sparqlalgebrajs@^4.2.0:
   version "4.2.0"
@@ -11563,6 +11602,11 @@ undici@^5.19.1:
   integrity sha512-wh1pHJHnUeQV5Xa8/kyQhO7WFa8M34l026L5P/+2TYiakvGy5Rdc8jWZVyG7ieht/0WgJLEd3kcU5gKx+6GC8w==
   dependencies:
     "@fastify/busboy" "^2.0.0"
+
+undici@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.8.0.tgz#fb146f7e15645fd3453815e7b96e9b563856dfde"
+  integrity sha512-22FP0QRSJDQO2PC+bMBVqvsZ3cNQwQnxCNq910N3eIIU4xgMVVpLbEEX7fCg7AalvijPwjlyk5ezenw9FqZfHQ==
 
 unique-filename@^2.0.0:
   version "2.0.1"
