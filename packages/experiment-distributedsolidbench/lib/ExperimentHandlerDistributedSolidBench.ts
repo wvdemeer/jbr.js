@@ -124,6 +124,10 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       //     dqc,
       //     { replacer: null, spaces: 3 },
       // );
+
+      // eslint-disable-next-line no-console
+      console.log(`ExperimentDistributedSolidBench replacing http://localhost:3003/ with ${experiment.leftoverServerBaseUrl}`);
+
       const textValue = JSON.stringify(dqc, null, 3)
         .replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
       await fse.writeFile(
