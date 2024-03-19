@@ -167,8 +167,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     await fse.copyFile(Path.join(__dirname, 'templates', 'config-client.json'),
       Path.join(experimentPaths.input, 'config-client.json'));
 
-    await fse.mkdir(Path.join(experimentPaths.input, 'input'));
+    await fse.mkdir(Path.join(experimentPaths.input, 'dockerfiles'));
     await fse.copyFile(Path.join(__dirname, 'templates', 'Dockerfile-client'),
-      Path.join(experimentPaths.input, 'input', 'Dockerfile-client'));
+      Path.join(experimentPaths.input, 'dockerfiles', 'Dockerfile-client'));
   }
 }
