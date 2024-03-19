@@ -98,10 +98,18 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         ...experiment.serverBaseUrls.map(baseUrl =>
           `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
       ];
-      await fse.writeJSON(
+      // Was: await fse.writeJSON(
+      //   Path.join(experimentPaths.root, experiment.configFragment),
+      //   dfcp,
+      //   { replacer: null, spaces: 3 },
+      // );
+
+      const textValue = JSON.stringify(dfcp, null, 3)
+        .replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
+      await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragment),
-        dfcp,
-        { replacer: null, spaces: 3 },
+        textValue,
+        {},
       );
     };
     const writeConfigQueries = async(): Promise<void> => {
@@ -119,19 +127,22 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         ...experiment.serverBaseUrls.map(baseUrl =>
           `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
       ];
-      // Was: await fse.writeJSON(
-      //     Path.join(experimentPaths.root, experiment.configQueries),
-      //     dqc,
-      //     { replacer: null, spaces: 3 },
-      // );
-
-      // eslint-disable-next-line no-console
-      console.log(`ExperimentDistributedSolidBench replacing http://localhost:3003/ with ${experiment.leftoverServerBaseUrl}`);
-
-      const textValue = JSON.stringify(dqc, null, 3)
-        .replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
-      await fse.writeFile(
+      await fse.writeJSON(
         Path.join(experimentPaths.root, experiment.configQueries),
+        dqc,
+        { replacer: null, spaces: 3 },
+      );
+    };
+    const writeConfigFragmentsAux = async(): Promise<void> => {
+      // Was:
+      // fse.copyFile(
+      //     Templates.ENHANCEMENT_FRAGMENT_CONFIG,
+      //     Path.join(experimentPaths.root, experiment.configFragmentAux),
+      // ),
+      const orig = (await fse.readFile(Templates.ENHANCEMENT_FRAGMENT_CONFIG)).toString();
+      const textValue = orig.replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
+      await fse.writeFile(
+        Path.join(experimentPaths.root, experiment.configFragmentAux),
         textValue,
         {},
       );
@@ -141,16 +152,13 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     // Because for some reason, it doesn't execute inside the Promise.all
     await writeConfigFragments();
     await writeConfigQueries();
+    await writeConfigFragmentsAux();
 
     // Copy config templates
     await Promise.all([
       fse.copyFile(
         Templates.ENHANCEMENT_CONFIG,
         Path.join(experimentPaths.root, experiment.configGenerateAux),
-      ),
-      fse.copyFile(
-        Templates.ENHANCEMENT_FRAGMENT_CONFIG,
-        Path.join(experimentPaths.root, experiment.configFragmentAux),
       ),
       fse.copyFile(
         Templates.SERVER_CONFIG,
