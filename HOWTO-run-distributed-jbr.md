@@ -37,7 +37,7 @@ Minimum required versions:
 cd packages/jbr
 yarn link
 cd -
-SOLID_SERVERS_FILE=$(pwd)/ss_list.txt jbr init distributedsolidbench test-jbr-1
+SOLID_SERVERS_FILE=$(pwd)/ss_list.txt LEFTOVER_HOSTNAME="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be" jbr init distributedsolidbench test-jbr-1
 cd test-jbr-1
 mkdir -p generated/out-validate
 mkdir -p output/logs
@@ -50,22 +50,15 @@ jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 Prepare:
 ```bash
 cd test-jbr-1
-curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/dockerfiles/Dockerfile-client' > input/dockerfiles/Dockerfile-client
-curl 'https://raw.githubusercontent.com/comunica/Experiments-Solid-Link-Traversal/master/experiments/queries-discover/input/context-client.json' > input/context-client.json
-echo -e '{ \n   "@context": [ \n      "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql/^2.0.0/components/context.jsonld", \n      "https://linkedsoftwaredependencies.org/bundles/npm/@comunica/config-query-sparql-link-traversal/^0.0.0/components/context.jsonld" \n   ], \n   "import": [ "ccqslt:config/config-solid-default.json" ]\n }\n' > input/config-client.json
-NODE_DNS="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be"
-sed -e "s/localhost:3000/${NODE_DNS}:3003/g" -i input/config-fragmenter*.json
 jbr prepare -v 2>&1 | tee prepare.log
 ```
 
-Edit `input/dockerfiles/Dockerfile-client` and remove the has on the first line, so it becomes:
+Optional:
+- Edit `input/dockerfiles/Dockerfile-client` and remove the has on the first line, so it becomes:
 
-```dockerfile
-FROM comunica/query-sparql-link-traversal-solid:dev
-```
-
-Not sure if needed: Edit `input/dockerfiles/Dockerfile-client` and add `--lenient --showStackTrace` to the `CMD` on the last line
-
+  ```dockerfile
+  FROM comunica/query-sparql-link-traversal-solid:dev
+  ```
 
 Run a local CSS:
 ```bash

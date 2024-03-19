@@ -20,13 +20,33 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     let serverUrls = [ 'http://distributedsolidbench-server1:3000/', 'http://distributedsolidbench-server2:3000/' ];
     // eslint-disable-next-line no-process-env
     const serverFile = process.env.SOLID_SERVERS_FILE;
+
+    // Leftover: the CSS server that servers the files not in user pods
+    //          (vocabulary etc)
+    // eslint-disable-next-line no-process-env
+    const leftoverHostname = process.env.LEFTOVER_HOSTNAME || 'localhost';
+    // eslint-disable-next-line no-process-env
+    const leftoverPort = Number.parseInt(process.env.LEFTOVER_PORT || '3003', 10);
+    // eslint-disable-next-line no-process-env
+    const leftoverProto = process.env.LEFTOVER_PROTO || 'http';
+    const leftoverServerBaseUrl = `${leftoverProto}://${leftoverHostname}:${leftoverPort}/`;
+
     if (serverFile) {
       // eslint-disable-next-line no-sync
       const fileContent = fs.readFileSync(serverFile, 'utf-8');
       serverUrls = fileContent.split(/\r?\n|\r|\n/ug).filter(str => str.trim().length > 0);
     }
     const firstServerUrl = serverUrls[0].endsWith('/') ? serverUrls[0] : `${serverUrls[0]}/`;
-    const queryRunnerUpQueryPodFile = `${firstServerUrl}c8u00000000000000000933/profile/card#me`;
+
+    // Note: queryRunnerUpQueryPodFile must be something (originally a profile/card) we can access to test connectivity.
+    //       But we only know the location of the "leftovers" here, as we don't know how the pods will be spread yet.
+    // Was:   const queryRunnerUpQueryPodFile = `${firstServerUrl}c8u00000000000000000933/profile/card#me`;
+    // Was:   queryRunnerUpQuery: `SELECT * WHERE { <${queryRunnerUpQueryPodFile}> a ?o } LIMIT 1`,
+    const queryRunnerUpQueryPodFile = `${leftoverServerBaseUrl}www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/Person`;
+    // Contains:
+    //   <${leftoverBaseUrl}www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/Person>
+    //   <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+    //   <http://www.w3.org/2000/01/rdf-schema#Class> .
     return {
       scale: '0.1',
       configGenerateAux: 'input/config-enhancer.json',
@@ -39,6 +59,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       hadoopMemory: '4G',
 
       endpointUrl: 'http://localhost:3001/sparql',
+      leftoverServerBaseUrl,
       serverBaseUrls: serverUrls,
       serverAuthorization: 'WAC',
       queryRunnerReplication: 3,
@@ -98,10 +119,17 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         ...experiment.serverBaseUrls.map(baseUrl =>
           `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
       ];
-      await fse.writeJSON(
+      // Was: await fse.writeJSON(
+      //     Path.join(experimentPaths.root, experiment.configQueries),
+      //     dqc,
+      //     { replacer: null, spaces: 3 },
+      // );
+      const textValue = JSON.stringify(dqc, null, 3)
+        .replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
+      await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configQueries),
-        dqc,
-        { replacer: null, spaces: 3 },
+        textValue,
+        {},
       );
     };
 
@@ -132,5 +160,14 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
 
     await fse.copyFile(Path.join(__dirname, 'templates', 'css-localhost-3003-config.json'),
       Path.join(experimentPaths.input, 'css-localhost-3003-config.json'));
+
+    await fse.copyFile(Path.join(__dirname, 'templates', 'config-client.json'),
+      Path.join(experimentPaths.input, 'config-client.json'));
+
+    await fse.copyFile(Path.join(__dirname, 'templates', 'config-client.json'),
+      Path.join(experimentPaths.input, 'config-client.json'));
+
+    await fse.copyFile(Path.join(__dirname, 'templates', 'Dockerfile-client'),
+      Path.join(experimentPaths.input, 'input', 'Dockerfile-client'));
   }
 }

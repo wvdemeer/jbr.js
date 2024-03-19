@@ -91,8 +91,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/postsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationPerResource"
+                                "predicate": "http://localhost:3003/internal/postsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationPerResource"
                             }
                         },
                         {
@@ -129,8 +129,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/postsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationOneFile"
+                                "predicate": "http://localhost:3003/internal/postsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationOneFile"
                             }
                         },
                         {
@@ -167,8 +167,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/postsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationLocation"
+                                "predicate": "http://localhost:3003/internal/postsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationLocation"
                             }
                         },
                         {
@@ -217,8 +217,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/postsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationCreationDate"
+                                "predicate": "http://localhost:3003/internal/postsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationCreationDate"
                             }
                         },
                         {
@@ -274,8 +274,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/commentsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationPerResource"
+                                "predicate": "http://localhost:3003/internal/commentsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationPerResource"
                             }
                         },
                         {
@@ -312,8 +312,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/commentsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationOneFile"
+                                "predicate": "http://localhost:3003/internal/commentsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationOneFile"
                             }
                         },
                         {
@@ -350,8 +350,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/commentsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationLocation"
+                                "predicate": "http://localhost:3003/internal/commentsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationLocation"
                             }
                         },
                         {
@@ -400,8 +400,8 @@
                                     "predicateRegex": "vocabulary/hasCreator$"
                                 },
                                 "identifier": "object",
-                                "predicate": "http://localhost:3000/internal/commentsFragmentation",
-                                "link": "http://localhost:3000/internal/FragmentationCreationDate"
+                                "predicate": "http://localhost:3003/internal/commentsFragmentation",
+                                "link": "http://localhost:3003/internal/FragmentationCreationDate"
                             }
                         },
                         {

@@ -32,6 +32,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
   public readonly configValidation: string;
   public readonly hadoopMemory: string;
   public readonly hookSparqlEndpoint: Hook;
+  public readonly leftoverServerBaseUrl: string;
   public readonly serverBaseUrls: string[];
   public readonly serverAuthorization: 'WAC' | 'ACP' | undefined;
   public readonly endpointUrl: string;
@@ -56,6 +57,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
    * @param hadoopMemory
    * @param dockerfileServer
    * @param hookSparqlEndpoint
+   * @param leftoverServerBaseUrl
    * @param serverBaseUrls
    * @param serverAuthorization
    * @param endpointUrl
@@ -79,6 +81,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
     configValidation: string,
     hadoopMemory: string,
     hookSparqlEndpoint: Hook,
+    leftoverServerBaseUrl: string,
     serverBaseUrls: string[],
     serverAuthorization: 'WAC' | 'ACP' | undefined,
     endpointUrl: string,
@@ -102,6 +105,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
     this.hadoopMemory = hadoopMemory;
     this.hookSparqlEndpoint = hookSparqlEndpoint;
     this.endpointUrl = endpointUrl;
+    this.leftoverServerBaseUrl = leftoverServerBaseUrl;
     this.serverBaseUrls = serverBaseUrls;
     this.serverAuthorization = serverAuthorization;
     this.queryRunnerReplication = queryRunnerReplication;
