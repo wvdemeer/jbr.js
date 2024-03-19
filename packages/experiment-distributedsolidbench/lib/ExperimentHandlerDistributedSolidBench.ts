@@ -105,7 +105,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       // );
 
       const textValue = JSON.stringify(dfcp, null, 3)
-        .replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
+        .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragment),
         textValue,
@@ -135,12 +135,12 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     };
     const writeConfigFragmentsAux = async(): Promise<void> => {
       // Was:
-      // fse.copyFile(
-      //     Templates.ENHANCEMENT_FRAGMENT_CONFIG,
-      //     Path.join(experimentPaths.root, experiment.configFragmentAux),
-      // ),
+      //    fse.copyFile(
+      //        Templates.ENHANCEMENT_FRAGMENT_CONFIG,
+      //        Path.join(experimentPaths.root, experiment.configFragmentAux),
+      //    ),
       const orig = (await fse.readFile(Templates.ENHANCEMENT_FRAGMENT_CONFIG)).toString();
-      const textValue = orig.replaceAll('http://localhost:3003/', experiment.leftoverServerBaseUrl);
+      const textValue = orig.replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragmentAux),
         textValue,
