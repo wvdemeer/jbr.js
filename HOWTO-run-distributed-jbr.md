@@ -41,7 +41,7 @@ SOLID_SERVERS_FILE=$(pwd)/ss_list.txt LEFTOVER_HOSTNAME="$(cat /var/emulab/boot/
 cd test-jbr-1
 mkdir -p generated/out-validate
 mkdir -p output/logs
-jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
+HACK_FOR_DISTRIBUTED_SOLIDBENCH=true jbr set-hook hookSparqlEndpoint sparql-endpoint-comunica
 ```
 
 `jbr-experiment.json` in `test-jbr-1` should have the correct `serverBaseUrls` set.
@@ -54,7 +54,7 @@ jbr prepare -v 2>&1 | tee prepare.log
 ```
 
 Optional:
-- Edit `input/dockerfiles/Dockerfile-client` and remove the has on the first line, so it becomes:
+- Edit `input/dockerfiles/Dockerfile-client` and remove the hash on the first line, so it becomes:
 
   ```dockerfile
   FROM comunica/query-sparql-link-traversal-solid:dev

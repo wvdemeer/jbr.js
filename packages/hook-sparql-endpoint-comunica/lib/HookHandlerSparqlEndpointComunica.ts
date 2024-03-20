@@ -34,20 +34,35 @@ export class HookHandlerSparqlEndpointComunica extends HookHandler<HookSparqlEnd
   }
 
   public async init(experimentPaths: IExperimentPaths, hookHandler: HookSparqlEndpointComunica): Promise<void> {
+    // eslint-disable-next-line no-process-env
+    const hack_for_distributed_solidbench = process.env.HACK_FOR_DISTRIBUTED_SOLIDBENCH === 'true';
+
     // Create Dockerfile for client
     if (!await fs.pathExists(Path.join(experimentPaths.input, 'dockerfiles'))) {
       await fs.mkdir(Path.join(experimentPaths.input, 'dockerfiles'));
     }
-    await fs.copyFile(Path.join(__dirname, 'templates', 'dockerfiles', 'Dockerfile-client'),
-      Path.join(experimentPaths.input, 'dockerfiles', 'Dockerfile-client'));
+    if (!hack_for_distributed_solidbench) {
+      await fs.copyFile(Path.join(__dirname, 'templates', 'dockerfiles', 'Dockerfile-client'),
+        Path.join(experimentPaths.input, 'dockerfiles', 'Dockerfile-client'));
+    } else {
+      await fs.copyFile(Path.join(__dirname, 'templates', 'distributed-solidbench', 'dockerfiles', 'Dockerfile-client'),
+        Path.join(experimentPaths.input, 'dockerfiles', 'Dockerfile-client'));
+    }
 
     // Create config for client
     if (!await fs.pathExists(Path.join(experimentPaths.input))) {
       await fs.mkdir(Path.join(experimentPaths.input));
     }
-    await fs.copyFile(Path.join(__dirname, 'templates', 'input', 'config-client.json'),
-      Path.join(experimentPaths.input, 'config-client.json'));
-    await fs.copyFile(Path.join(__dirname, 'templates', 'input', 'context-client.json'),
-      Path.join(experimentPaths.input, 'context-client.json'));
+    if (!hack_for_distributed_solidbench) {
+      await fs.copyFile(Path.join(__dirname, 'templates', 'input', 'config-client.json'),
+        Path.join(experimentPaths.input, 'config-client.json'));
+      await fs.copyFile(Path.join(__dirname, 'templates', 'input', 'context-client.json'),
+        Path.join(experimentPaths.input, 'context-client.json'));
+    } else {
+      await fs.copyFile(Path.join(__dirname, 'templates', 'distributed-solidbench', 'input', 'config-client.json'),
+        Path.join(experimentPaths.input, 'config-client.json'));
+      await fs.copyFile(Path.join(__dirname, 'templates', 'distributed-solidbench', 'input', 'context-client.json'),
+        Path.join(experimentPaths.input, 'context-client.json'));
+    }
   }
 }
