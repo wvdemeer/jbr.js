@@ -130,7 +130,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
     forceOverwriteGenerated: boolean,
   ): Promise<void> {
     // eslint-disable-next-line no-console
-    console.log(`ExperimentDistributedSolidBench entry this.serverBaseUrls=${this.serverBaseUrls}`);
+    console.log(`ExperimentDistributedSolidBench entry this.serverBaseUrls=${this.serverBaseUrls} this.leftoverServerBaseUrl=${this.leftoverServerBaseUrl}`);
 
     // Validate memory limit
     const minimumMemory = 8192;
@@ -181,6 +181,23 @@ export class ExperimentDistributedSolidBench implements Experiment {
       }
       return [ sbu, dir ];
     }));
+
+    // If not localhost serving leftover files, upload leftover files as well.
+    const leftoverServerBaseUrl = new URL(this.leftoverServerBaseUrl);
+    const leftoverServerHostname = leftoverServerBaseUrl.hostname;
+    if (leftoverServerHostname !== 'localhost' && leftoverServerHostname !== '127.0.0.1' &&
+        leftoverServerHostname.includes('.')) {
+      const protocol = leftoverServerBaseUrl.protocol.endsWith(':') ?
+        leftoverServerBaseUrl.protocol.slice(0, -1) :
+        leftoverServerBaseUrl.protocol;
+      const port = leftoverServerBaseUrl.port;
+      let dir = Path.join(context.experimentPaths.generated, 'out-fragments', protocol, leftoverServerBaseUrl.hostname);
+      if (port) {
+        dir += `_${port}`;
+      }
+      urlToDirMap[this.leftoverServerBaseUrl] = dir;
+    }
+
     // eslint-disable-next-line no-console
     console.log(`ExperimentDistributedSolidBench entry urlToDirMap=${JSON.stringify(urlToDirMap)}`);
 
