@@ -29,10 +29,18 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     const leftoverPort = Number.parseInt(process.env.LEFTOVER_PORT || '3003', 10);
     // eslint-disable-next-line no-process-env
     const leftoverProto = process.env.LEFTOVER_PROTO || 'http';
-    const portPart =
-        (leftoverProto === 'https' && leftoverPort === 443) || (leftoverProto === 'http' && leftoverPort === 80) ?
-          '' :
-          `:${leftoverPort}`;
+
+    if (leftoverHostname.includes(':') || leftoverHostname.includes('/')) {
+      throw new Error(`Got invalid value for LEFTOVER_HOSTNAME: '${leftoverHostname}'`);
+    }
+
+    let portPart = `:${leftoverPort}`;
+    if (leftoverProto === 'https' && leftoverPort === 443) {
+      portPart = '';
+    }
+    if (leftoverProto === 'http' && leftoverPort === 80) {
+      portPart = '';
+    }
     const leftoverServerBaseUrl = `${leftoverProto}://${leftoverHostname}${portPart}/`;
 
     if (serverFile) {

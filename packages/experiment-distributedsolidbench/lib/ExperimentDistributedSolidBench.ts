@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import type { PathLike } from 'node:fs';
 import * as Path from 'path';
 import * as v8 from 'v8';
 import { populateServersFromDir } from '@imec-ilabt/solid-perftest-tools';
@@ -17,6 +18,15 @@ import {
   writeBenchmarkResults,
 } from 'sparql-benchmark-runner';
 import { setGlobalDispatcher, Agent } from 'undici';
+
+async function dirExists(dirPath: PathLike): Promise<boolean> {
+  let exists: boolean;
+  try {
+    return (await fs.stat(dirPath)).isDirectory();
+  } catch {
+    return false;
+  }
+}
 
 /**
  * An experiment instance for the SolidBench social network benchmark.
@@ -191,11 +201,22 @@ export class ExperimentDistributedSolidBench implements Experiment {
         leftoverServerBaseUrl.protocol.slice(0, -1) :
         leftoverServerBaseUrl.protocol;
       const port = leftoverServerBaseUrl.port;
+      // eslint-disable-next-line no-console
+      console.log(`ExperimentDistributedSolidBench adding uploads for leftovers: 
+                   leftoverServerHostname=${leftoverServerHostname} leftoverServerBaseUrl=${leftoverServerBaseUrl}
+                   protocol=${protocol} port=${port}`);
       let dir = Path.join(context.experimentPaths.generated, 'out-fragments', protocol, leftoverServerBaseUrl.hostname);
       if (port) {
-        dir += `_${port}`;
+        const dirWithPort = `_${port}`;
+        if (!await dirExists(dir) && await dirExists(dirWithPort)) {
+          dir = dirWithPort;
+        }
       }
       urlToDirMap[this.leftoverServerBaseUrl] = dir;
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(`ExperimentDistributedSolidBench NOT adding uploads for leftovers: 
+                   leftoverServerHostname=${leftoverServerHostname} leftoverServerBaseUrl=${leftoverServerBaseUrl}`);
     }
 
     // eslint-disable-next-line no-console
