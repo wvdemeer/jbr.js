@@ -29,7 +29,11 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     const leftoverPort = Number.parseInt(process.env.LEFTOVER_PORT || '3003', 10);
     // eslint-disable-next-line no-process-env
     const leftoverProto = process.env.LEFTOVER_PROTO || 'http';
-    const leftoverServerBaseUrl = `${leftoverProto}://${leftoverHostname}:${leftoverPort}/`;
+    const portPart =
+        (leftoverProto === 'https' && leftoverPort === 443) || (leftoverProto === 'http' && leftoverPort === 80) ?
+          '' :
+          `:${leftoverPort}`;
+    const leftoverServerBaseUrl = `${leftoverProto}://${leftoverHostname}${portPart}/`;
 
     if (serverFile) {
       // eslint-disable-next-line no-sync
