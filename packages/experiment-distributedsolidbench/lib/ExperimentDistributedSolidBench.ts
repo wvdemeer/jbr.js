@@ -200,7 +200,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
       const protocol = leftoverServerBaseUrl.protocol.endsWith(':') ?
         leftoverServerBaseUrl.protocol.slice(0, -1) :
         leftoverServerBaseUrl.protocol;
-      const port = leftoverServerBaseUrl.port;
+      const port = leftoverServerBaseUrl.port || (protocol === 'https' ? 443 : 80);
       // eslint-disable-next-line no-console
       console.log(`ExperimentDistributedSolidBench adding uploads for leftovers: 
                    leftoverServerHostname=${leftoverServerHostname} leftoverServerBaseUrl=${leftoverServerBaseUrl}
