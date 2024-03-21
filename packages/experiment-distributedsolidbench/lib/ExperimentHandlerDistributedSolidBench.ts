@@ -117,16 +117,19 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         Path.join(__dirname, 'templates', 'distributed-query-config.json'),
       );
 
-      const valueTransformerDistributeIri = dqc.providers[7].variables[0].valueTransformers[1];
-      if (valueTransformerDistributeIri['@type'] !== 'ValueTransformerDistributeIri') {
-        throw new Error(`Expected a ValueTransformerDistributeIri but got ${valueTransformerDistributeIri['@type']}. ` +
-            'Check your distributed-query-config.json template file');
+      const valueTransformerDistributeIri = dqc?.providers[7]?.variables[0]?.valueTransformers[1];
+      if (!valueTransformerDistributeIri ||
+          valueTransformerDistributeIri['@type'] !== 'ValueTransformerDistributeIri') {
+        // Ignore, as the complex query we needed to change is not present
+        // throw new Error(`Expected a ValueTransformerDistributeIri but got ` +
+        //     `${valueTransformerDistributeIri['@type']}. ` +
+        //     'Check your distributed-query-config.json template file');
+      } else {
+        valueTransformerDistributeIri.replacementStrings = [
+          ...experiment.serverBaseUrls.map(baseUrl =>
+            `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
+        ];
       }
-
-      valueTransformerDistributeIri.replacementStrings = [
-        ...experiment.serverBaseUrls.map(baseUrl =>
-          `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}c${serverCount}u$1/profile/card#me`),
-      ];
       await fse.writeJSON(
         Path.join(experimentPaths.root, experiment.configQueries),
         dqc,
