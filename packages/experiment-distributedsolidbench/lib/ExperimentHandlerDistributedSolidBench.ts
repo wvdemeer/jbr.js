@@ -117,7 +117,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
         Path.join(__dirname, 'templates', 'distributed-query-config.json'),
       );
 
-      const valueTransformerDistributeIri = dqc?.providers[7]?.variables[0]?.valueTransformers[1];
+      const valueTransformerDistributeIri = dqc?.providers?.[7]?.variables?.[0]?.valueTransformers?.[1];
       if (!valueTransformerDistributeIri ||
           valueTransformerDistributeIri['@type'] !== 'ValueTransformerDistributeIri') {
         // Ignore, as the complex query we needed to change is not present
