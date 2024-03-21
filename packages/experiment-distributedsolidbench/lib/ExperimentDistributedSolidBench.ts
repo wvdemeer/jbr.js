@@ -203,11 +203,13 @@ export class ExperimentDistributedSolidBench implements Experiment {
       const port = leftoverServerBaseUrl.port || (protocol === 'https' ? 443 : 80);
       // eslint-disable-next-line no-console
       console.log(`ExperimentDistributedSolidBench adding uploads for leftovers: 
-                   leftoverServerHostname=${leftoverServerHostname} leftoverServerBaseUrl=${leftoverServerBaseUrl}
-                   protocol=${protocol} port=${port}`);
+                   leftoverServerHostname=${leftoverServerHostname} 
+                   leftoverServerBaseUrl=${leftoverServerBaseUrl}
+                   protocol=${protocol} 
+                   port=${port}`);
       let dir = Path.join(context.experimentPaths.generated, 'out-fragments', protocol, leftoverServerBaseUrl.hostname);
       if (port) {
-        const dirWithPort = `_${port}`;
+        const dirWithPort = `${dir}_${port}`;
         if (!await dirExists(dir) && await dirExists(dirWithPort)) {
           dir = dirWithPort;
         }
