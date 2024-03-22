@@ -33,7 +33,7 @@
         },
         {
             "@type": "QuadTransformerReplaceIri",
-            "searchRegex": "^http://www-w3-org/2002/07/owl",
+            "searchRegex": "^http://www.w3.org/2002/07/owl",
             "replacementString": "http://localhost:3003/www-w3-org/2002/07/owl"
         },
         {
@@ -47,7 +47,7 @@
         {
             "@type": "QuadTransformerAppendResourceLink",
             "typeRegex": "vocabulary/Person$",
-            "predicate": "http://www-w3-org/ns/pim/space#storage",
+            "predicate": "http://www.w3.org/ns/pim/space#storage",
             "link": "../"
         },
         {
@@ -62,7 +62,7 @@
             },
             "predicate": {
                 "@type": "TermTemplateStaticNamedNode",
-                "value": "http://www-w3-org/2000/01/rdf-schema#seeAlso"
+                "value": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
             },
             "object": {
                 "@type": "TermTemplateQuadComponent",

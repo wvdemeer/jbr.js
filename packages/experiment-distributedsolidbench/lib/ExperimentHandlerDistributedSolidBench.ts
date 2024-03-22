@@ -118,9 +118,9 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
 
       const textValue = JSON.stringify(dfcp, null, 3)
         .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
-        .replaceAll(/www[.-]ldbc[.-]eu/ug, `c${serverCount}_www-ldbc-eu`)
-        .replaceAll(/dbpedia[.-]org/ug, `c${serverCount}_dbpedia-org`)
-        .replaceAll(/www[.-]w3[.-]org/ug, `c${serverCount}_www-w3-org`);
+        .replaceAll(/www-ldbc-eu/ug, `c${serverCount}_www-ldbc-eu`)
+        .replaceAll(/dbpedia-org/ug, `c${serverCount}_dbpedia-org`)
+        .replaceAll(/www-w3-org/ug, `c${serverCount}_www-w3-org`);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragment),
         textValue,
@@ -152,22 +152,40 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       );
     };
     const writeConfigFragmentsAux = async(): Promise<void> => {
-      // Was:
+      const efc = await fse.readJSON(Templates.ENHANCEMENT_FRAGMENT_CONFIG);
+      const transformers = efc.transformers;
+
+      for (const transformer of transformers) {
+        transformer.replacementString = transformer.replacementString
+          .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
+          .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
+          .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`)
+          .replaceAll(/www\.w3\.org/ug, `c${serverCount}_www-w3-org`);
+      }
+      await fse.writeJSON(
+        Path.join(experimentPaths.root, experiment.configFragmentAux),
+        efc,
+        { replacer: null, spaces: 3 },
+      );
+
+      // Was orig:
       //    fse.copyFile(
       //        Templates.ENHANCEMENT_FRAGMENT_CONFIG,
       //        Path.join(experimentPaths.root, experiment.configFragmentAux),
       //    ),
-      const orig = (await fse.readFile(Templates.ENHANCEMENT_FRAGMENT_CONFIG)).toString();
-      const textValue = orig
-        .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
-        .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
-        .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`)
-        .replaceAll(/www\.w3\.org/ug, `c${serverCount}_www-w3-org`);
-      await fse.writeFile(
-        Path.join(experimentPaths.root, experiment.configFragmentAux),
-        textValue,
-        {},
-      );
+
+      // Then was:
+      // const orig = (await fse.readFile(Templates.ENHANCEMENT_FRAGMENT_CONFIG)).toString();
+      // const textValue = orig
+      //   .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
+      //   .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
+      //   .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`)
+      //   .replaceAll(/www\.w3\.org/ug, `c${serverCount}_www-w3-org`);
+      // await fse.writeFile(
+      //   Path.join(experimentPaths.root, experiment.configFragmentAux),
+      //   textValue,
+      //   {},
+      // );
     };
 
     // We do this first, instead of in the Promise.all below

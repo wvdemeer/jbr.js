@@ -14,12 +14,10 @@ do
     
     #export LEFTOVER_HOSTNAME="$(tail -1 ~/ss_list.txt)"
     # HACK: abusing basename
-    export LEFTOVER_HOSTNAME="$(basename $(cat ~/leftover_host${NR}.txt))"
-    LEFTOVER_HOSTNAME="$(basename $(cat ~/leftover_host${NR}.txt))"
+    #export LEFTOVER_HOSTNAME="$(basename $(cat ~/leftover_host${NR}.txt))"
+    export LEFTOVER_HOSTNAME="$(basename $(cat ~/leftover_host.txt))"
     export LEFTOVER_PORT=443
     export LEFTOVER_PROTO=https
-    echo "LEFTOVER_HOSTNAME=${LEFTOVER_HOSTNAME}"
-
 
     target_dir="${jbr_dir}/test${NR}/"
     echo -ne "\n\nInit ${target_dir}...\n\n"
