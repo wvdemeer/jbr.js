@@ -2,9 +2,11 @@
 
 jbr_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source_dir="${jbr_dir}/test8/"
+#source_dir="${jbr_dir}/test8/"
+source_dir="${HOME}/jbr-shared/"
+mkdir -p "${source_dir}generated/populate-cache" "${source_dir}generated/out-snb"
 
-for NR in 1 2 4
+for NR in 1 # 2 4
 do
     #export LEFTOVER_HOSTNAME="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be"
     #export LEFTOVER_PORT=3003

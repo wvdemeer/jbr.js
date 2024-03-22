@@ -4,7 +4,7 @@ jbr_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 SELF_DNS="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be"
 
-for NR in 1 2 4
+for NR in 1 # 2 4
 do
     target_dir="${jbr_dir}/test${NR}/"
     echo -ne "\n\nRunning ${target_dir}...\n\n"

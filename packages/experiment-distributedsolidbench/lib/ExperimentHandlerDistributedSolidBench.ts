@@ -119,7 +119,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       const textValue = JSON.stringify(dfcp, null, 3)
         .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
         .replaceAll(/www[.-]ldbc[.-]eu/ug, `c${serverCount}_www-ldbc-eu`)
-        .replaceAll(/dbpedia[.-]org/ug, `c${serverCount}_dbpedia-org`);
+        .replaceAll(/dbpedia[.-]org/ug, `c${serverCount}_dbpedia-org`)
+        .replaceAll(/www[.-]w3[.-]org/ug, `c${serverCount}_www-w3-org`);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragment),
         textValue,
@@ -160,7 +161,8 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       const textValue = orig
         .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
         .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
-        .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`);
+        .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`)
+        .replaceAll(/www\.w3\.org/ug, `c${serverCount}_www-w3-org`);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragmentAux),
         textValue,
