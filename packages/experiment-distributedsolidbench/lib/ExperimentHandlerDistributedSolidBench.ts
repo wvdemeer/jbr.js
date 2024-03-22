@@ -54,7 +54,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     //       But we only know the location of the "leftovers" here, as we don't know how the pods will be spread yet.
     // Was:   const queryRunnerUpQueryPodFile = `${firstServerUrl}c8u00000000000000000933/profile/card#me`;
     // Was:   queryRunnerUpQuery: `SELECT * WHERE { <${queryRunnerUpQueryPodFile}> a ?o } LIMIT 1`,
-    const queryRunnerUpQueryPodFile = `${leftoverServerBaseUrl}www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/Person`;
+    const queryRunnerUpQueryPodFile = `${leftoverServerBaseUrl}c${serverUrls.length}_www-ldbc-eu/ldbc_socialnet/1.0/vocabulary/Person`;
     // Contains:
     //   <${leftoverBaseUrl}www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/Person>
     //   <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
@@ -117,7 +117,9 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       // );
 
       const textValue = JSON.stringify(dfcp, null, 3)
-        .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl);
+        .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
+        .replaceAll(/www[.-]ldbc[.-]eu/ug, `c${serverCount}_www-ldbc-eu`)
+        .replaceAll(/dbpedia[.-]org/ug, `c${serverCount}_dbpedia-org`);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragment),
         textValue,
@@ -155,7 +157,10 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       //        Path.join(experimentPaths.root, experiment.configFragmentAux),
       //    ),
       const orig = (await fse.readFile(Templates.ENHANCEMENT_FRAGMENT_CONFIG)).toString();
-      const textValue = orig.replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl);
+      const textValue = orig
+        .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
+        .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
+        .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`);
       await fse.writeFile(
         Path.join(experimentPaths.root, experiment.configFragmentAux),
         textValue,
