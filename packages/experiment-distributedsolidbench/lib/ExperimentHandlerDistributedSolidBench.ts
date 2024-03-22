@@ -156,11 +156,13 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       const transformers = efc.transformers;
 
       for (const transformer of transformers) {
-        transformer.replacementString = transformer.replacementString
-          .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
-          .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
-          .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`)
-          .replaceAll(/www\.w3\.org/ug, `c${serverCount}_www-w3-org`);
+        if (transformer.replacementString) {
+          transformer.replacementString = transformer.replacementString
+            .replaceAll(/http:\/\/localhost:300[03]\//ug, experiment.leftoverServerBaseUrl)
+            .replaceAll(/www\.ldbc\.eu/ug, `c${serverCount}_www-ldbc-eu`)
+            .replaceAll(/dbpedia\.org/ug, `c${serverCount}_dbpedia-org`)
+            .replaceAll(/www\.w3\.org/ug, `c${serverCount}_www-w3-org`);
+        }
       }
       await fse.writeJSON(
         Path.join(experimentPaths.root, experiment.configFragmentAux),
