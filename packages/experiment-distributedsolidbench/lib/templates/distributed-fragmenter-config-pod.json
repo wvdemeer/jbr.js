@@ -23,6 +23,11 @@
     "transformers": [
         {
             "@type": "QuadTransformerReplaceIri",
+            "searchRegex": "[^/]/([^/]*)/",
+            "replacementString": "cnt_$1"
+        },
+        {
+            "@type": "QuadTransformerReplaceIri",
             "searchRegex": "^http://www.ldbc.eu",
             "replacementString": "http://localhost:3003/www-ldbc-eu"
         },
