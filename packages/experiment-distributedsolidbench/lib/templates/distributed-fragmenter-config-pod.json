@@ -23,8 +23,8 @@
     "transformers": [
         {
             "@type": "QuadTransformerReplaceIri",
-            "searchRegex": "[^/]/([^/]*)/",
-            "replacementString": "cnt_$1"
+            "searchRegex": "([^/])/([^/]+)/([^/]*)$",
+            "replacementString": "$1/cnt_$2/$3"
         },
         {
             "@type": "QuadTransformerReplaceIri",
