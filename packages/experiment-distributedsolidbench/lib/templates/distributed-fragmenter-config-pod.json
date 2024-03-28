@@ -23,11 +23,6 @@
     "transformers": [
         {
             "@type": "QuadTransformerReplaceIri",
-            "searchRegex": "([^/])/([^/]+)/([^/]*)$",
-            "replacementString": "$1/cnt_$2/$3"
-        },
-        {
-            "@type": "QuadTransformerReplaceIri",
             "searchRegex": "^http://www.ldbc.eu",
             "replacementString": "http://localhost:3003/www-ldbc-eu"
         },
@@ -48,6 +43,11 @@
                 "http://server1/users$1/profile/card#me",
                 "http://server2/users$1/profile/card#me"
             ]
+        },
+        {
+            "@type": "QuadTransformerReplaceIri",
+            "searchRegex": "^(https://localhost:3003/.*)/([^/]+)/([^/]*)$",
+            "replacementString": "$1/cnt_$2/$3"
         },
         {
             "@type": "QuadTransformerAppendResourceLink",
