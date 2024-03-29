@@ -152,7 +152,10 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
       );
     };
     const writeConfigFragmentsAux = async(): Promise<void> => {
-      const efc = await fse.readJSON(Templates.ENHANCEMENT_FRAGMENT_CONFIG);
+      // Const efc = await fse.readJSON(Templates.ENHANCEMENT_FRAGMENT_CONFIG);
+      const efc = await fse.readJSON(
+        Path.join(__dirname, 'templates', 'distributed-fragmenter-auxiliary-config-pod.json'),
+      );
       const transformers = efc.transformers;
 
       for (const transformer of transformers) {

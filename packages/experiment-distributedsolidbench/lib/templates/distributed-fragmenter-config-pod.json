@@ -46,7 +46,7 @@
         },
         {
             "@type": "QuadTransformerReplaceIri",
-            "searchRegex": "^(https://localhost:3003/.*)/([^/]+)/([^/]*)$",
+            "searchRegex": "^(https://localhost:3003/dbpedia-org/.*)/([^/]+)/([^/]*)$",
             "replacementString": "$1/cnt_$2/$3"
         },
         {
