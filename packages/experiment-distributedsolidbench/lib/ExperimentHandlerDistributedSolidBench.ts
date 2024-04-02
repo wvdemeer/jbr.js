@@ -54,7 +54,7 @@ export class ExperimentHandlerDistributedSolidBench extends ExperimentHandler<Ex
     //       But we only know the location of the "leftovers" here, as we don't know how the pods will be spread yet.
     // Was:   const queryRunnerUpQueryPodFile = `${firstServerUrl}c8u00000000000000000933/profile/card#me`;
     // Was:   queryRunnerUpQuery: `SELECT * WHERE { <${queryRunnerUpQueryPodFile}> a ?o } LIMIT 1`,
-    const queryRunnerUpQueryPodFile = `${leftoverServerBaseUrl}c${serverUrls.length}_www-ldbc-eu/ldbc_socialnet/1.0/vocabulary/Person`;
+    const queryRunnerUpQueryPodFile = `${leftoverServerBaseUrl}c${serverUrls.length}_www-ldbc-eu/ldbc_socialnet/1.0/cnt_vocabulary/Person`;
     // Contains:
     //   <${leftoverBaseUrl}www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/Person>
     //   <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
