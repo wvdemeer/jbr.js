@@ -63,9 +63,9 @@ export class ExperimentDistributedSolidBench implements Experiment {
       if (entry.isFile()) {
         const file = Path.join(path, entry.name);
         await fs.writeFile(file, (await fs.readFile(file, 'utf8'))
-            .replace(/http:\/\/localhost:3000\/www.ldbc.eu/ug, `${replaceUrl}www-ldbc-eu`)
-            .replace(/http:\/\/localhost:3000\/dbpedia.org/ug, `${replaceUrl}dbpedia-org`)
-        );
+          .replace(/http:\/\/localhost:3000\/www.ldbc.eu/ug, `${replaceUrl}www-ldbc-eu`)
+          .replace(/http:\/\/localhost:3000\/dbpedia.org/ug, `${replaceUrl}dbpedia-org`)
+          .replace(new RegExp(`(${replaceUrl}.*)/([^/]+)/([^/]*)$`, 'ug'), `$1/cnt_$2/$3`));
       } else if (entry.isDirectory()) {
         await this.replaceBaseUrlInDir(Path.join(path, entry.name));
       }
@@ -196,7 +196,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
 
     // Replace prefix URLs to correct base URL in queries directory
     await this.replaceBaseUrlInDir(
-      Path.resolve(context.experimentPaths.generated, 'out-queries')
+      Path.resolve(context.experimentPaths.generated, 'out-queries'),
     );
 
     const urlToDirMap: Record<string, string> = Object.fromEntries(this.serverBaseUrls.map(sbu => {
