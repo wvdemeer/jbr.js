@@ -65,7 +65,8 @@ export class ExperimentDistributedSolidBench implements Experiment {
         await fs.writeFile(file, (await fs.readFile(file, 'utf8'))
           .replace(/http:\/\/localhost:3000\/www.ldbc.eu/ug, `${replaceUrl}www-ldbc-eu`)
           .replace(/http:\/\/localhost:3000\/dbpedia.org/ug, `${replaceUrl}dbpedia-org`)
-          .replace(new RegExp(`(${replaceUrl}.*)/([^/]+)/([^/]*)$`, 'ug'), `$1/cnt_$2/$3`));
+          .replace(new RegExp(`(${replaceUrl}.*)/([^/]+)/([^/]*)$`, 'ug'), `$1/cnt_$2/$3`)
+          .replace(new RegExp(`(${replaceUrl}.*)/vocabulary/$`, 'ug'), `$1/cnt_vocabulary/`));
       } else if (entry.isDirectory()) {
         await this.replaceBaseUrlInDir(Path.join(path, entry.name));
       }
