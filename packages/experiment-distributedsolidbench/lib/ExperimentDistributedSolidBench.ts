@@ -66,7 +66,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
           .replace(/http:\/\/localhost:3000\/www.ldbc.eu/ug, `${replaceUrl}www-ldbc-eu`)
           .replace(/http:\/\/localhost:3000\/dbpedia.org/ug, `${replaceUrl}dbpedia-org`)
           .replace(new RegExp(`(${replaceUrl}.*)/([^/]+)/([^/]*)$`, 'ug'), `$1/cnt_$2/$3`)
-          .replace(new RegExp(`(${replaceUrl}.*)/ldbc_socialnet/1.0/vocabulary/>`, 'ug'), `$1/ldbc_socialnet/1.0/cnt_vocabulary/`));
+          .replace(new RegExp(`(${replaceUrl}.*)/ldbc_socialnet/1.0/vocabulary/>`, 'ug'), `$1/ldbc_socialnet/1.0/cnt_vocabulary/>`));
       } else if (entry.isDirectory()) {
         await this.replaceBaseUrlInDir(Path.join(path, entry.name));
       }
