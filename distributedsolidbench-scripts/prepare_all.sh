@@ -2,7 +2,7 @@
 
 jbr_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-for NR in 1 #2 4
+for NR in 7
 do
     target_dir="${jbr_dir}/test${NR}/"
     echo -ne "\n\nPreparing ${target_dir}...\n\n"

@@ -4,7 +4,7 @@ jbr_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 SELF_DNS="$(cat /var/emulab/boot/nodeid).wall1.ilabt.imec.be"
 
-for NR in 1 # 2 4
+for NR in 7
 do
     target_dir="${jbr_dir}/test${NR}/"
     echo -ne "\n\nRunning ${target_dir}...\n\n"
@@ -31,12 +31,12 @@ do
     jbr run -v 2>&1 | tee run.log
 
     echo DONE
-    echo Kill CSS background job %1
-    kill -INT %1
-    sleep 4
-    echo Hopefully CSS was killed
-    ss -lnp --tcp | grep 3003
-    echo
+    #echo Kill CSS background job %1
+    #kill -INT %1
+    #sleep 4
+    #echo Hopefully CSS was killed
+    #ss -lnp --tcp | grep 3003
+    #echo
 done
 
 echo -ne "\n\nAll Done.\n\n"
