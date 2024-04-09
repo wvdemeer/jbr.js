@@ -253,6 +253,12 @@ export class ExperimentDistributedSolidBench implements Experiment {
       await fs.mkdir(populateCacheDir, { recursive: false });
     }
 
+    const serverCount = this.serverBaseUrls.length;
+    let maxParallelism = 30;
+    if (maxParallelism * serverCount > 150) {
+      maxParallelism = 150 / serverCount;
+    }
+
     // eslint-disable-next-line no-console
     console.log(`ExperimentDistributedSolidBench prepare populateServersFromDir`);
     const createdUserInfo = await populateServersFromDir({
@@ -260,7 +266,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
       urlToDirMap,
       authorization: this.serverAuthorization,
       populateCacheDir,
-      maxParallelism: 30,
+      maxParallelism,
     });
 
     // eslint-disable-next-line no-console
