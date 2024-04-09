@@ -256,7 +256,7 @@ export class ExperimentDistributedSolidBench implements Experiment {
     const serverCount = this.serverBaseUrls.length;
     let maxParallelism = 30;
     if (maxParallelism * serverCount > 150) {
-      maxParallelism = 150 / serverCount;
+      maxParallelism = Math.floor(150 / serverCount);
     }
 
     // eslint-disable-next-line no-console
